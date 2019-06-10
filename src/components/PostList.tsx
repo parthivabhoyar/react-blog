@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchPosts } from '../actions';
-import { fetchUser } from '../actions';
+import { fetchPostsAndUsers } from '../actions';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import UserData from './UserData';
 
 interface IRecipeProps {
-    fetchPosts: any;
+    fetchPostsAndUsers: any;
     posts: any;
 }
 
@@ -25,7 +24,7 @@ class PostList extends React.Component<IRecipeProps> {
     }));
 
     componentDidMount() {
-        this.props.fetchPosts();
+        this.props.fetchPostsAndUsers();
     }
 
     listBlogs() {
@@ -33,31 +32,31 @@ class PostList extends React.Component<IRecipeProps> {
             return (
                 <ListItem button divider key={`blog${index}`}>
                     <ListItemText primary={d.title} />
-                    <UserData userId={parseInt(d.userId)} dataIndex={index}/>
+                    <UserData userId={parseInt(d.userId)} dataIndex={index} />
                 </ ListItem>
-                    );
-                });
-            }
-        
+            );
+        });
+    }
+
     printBlogs() {
         return (
             <List component="nav" aria-label="Mailbox folders">
-                        {this.listBlogs()}
-                    </List>
-                    );
-                }
-            
+                {this.listBlogs()}
+            </List>
+        );
+    }
+
     render() {
         if (this.props.posts && this.props.posts.length > 0) {
             return this.printBlogs();
         } else {
             return <div>Loading...</div>;
-                }
-            }
         }
-        
+    }
+}
+
 const mapStateToProps = (state: any) => {
-    return {posts: state.posts, user: state.user };
-                };
-                
-export default connect(mapStateToProps, {fetchPosts, fetchUser })(PostList);
+    return { posts: state.posts, user: state.user };
+};
+
+export default connect(mapStateToProps, { fetchPostsAndUsers })(PostList);
